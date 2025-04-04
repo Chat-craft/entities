@@ -8,14 +8,15 @@ from src.app.crud.user.repo import Repository
 from src.app.crud.docs.repo import DocsRepo
 from src.app.crud.apikeys.repo import ApiKeysRepo
 from src.app.api.v1.users.user_router import UserRouter
+from os import environ
+from dotenv import load_dotenv
 
-
+load_dotenv()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # load env 
-    
-    mongo_uri = "mongodb+srv://kunalkeshavsinghsahni:UUphn1xBC7JF6IS7@cluster0.rpxrqce.mongodb.net"
+    mongo_uri = environ.get('MONGO_URI')
 
     # Initialize database connection
     client = await ping_server(mongo_uri)
