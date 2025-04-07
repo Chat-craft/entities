@@ -2,8 +2,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 
 async def ping_server(uri : str) -> AsyncIOMotorClient | Exception:
-  # Replace the placeholder with your Atlas connection string
-  print("uri : ", uri)
 
   # Create a new client and connect to the server
   client = AsyncIOMotorClient(uri)

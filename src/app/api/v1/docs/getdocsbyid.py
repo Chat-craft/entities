@@ -6,7 +6,6 @@ def include_route(routerobj : DocsRouter) -> None:
     @routerobj.router.get("/doc_id")
     async def get_doc_by_id(doc_id: str):
         try:
-            print("i reach here and get doc id ", doc_id)
             doc = await routerobj.docs_service.get_doc_by_id(doc_id=doc_id)
             return ErrorHandler.handle_success(
                 data={"doc": doc},
