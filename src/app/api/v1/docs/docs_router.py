@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, APIRouter
 from src.app.api.v1.base_router import BaseRouter
 from src.app.crud.docs.service import DocsService
 from src.app.core.utils.singleton import Singleton
@@ -11,3 +11,11 @@ class DocsRouter(BaseRouter, metaclass = Singleton):
             tags=["docs"]
         )
         self.docs_service = docs_service
+
+    def include_docs_routes(self) -> APIRouter:
+        from src.app.api.v1.docs import getdocsbyid, upload_doc
+
+        getdocsbyid.include_route(self)
+        upload_doc.include_route(self)
+
+        return self.router

@@ -8,6 +8,7 @@ from src.app.crud.user.repo import Repository
 from src.app.crud.docs.repo import DocsRepo
 from src.app.crud.apikeys.repo import ApiKeysRepo
 from src.app.api.v1.users.user_router import UserRouter
+from src.app.api.v1.docs.docs_router import DocsRouter
 from os import environ
 from dotenv import load_dotenv
 
@@ -33,8 +34,10 @@ async def lifespan(app: FastAPI):
     docs_service = DocsService(docs_repo)
     user_service = UserService(user_repo, api_keys_service = apikeys_service, docs_service = docs_service)
     user_router = UserRouter(user_service=user_service)
+    docs_router = DocsRouter(docs_service=docs_service)
    
     app.include_router(user_router.include_user_routes())
+    app.include_router(docs_router.include_docs_routes())
 
     
     yield

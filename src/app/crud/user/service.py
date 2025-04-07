@@ -148,5 +148,5 @@ class UserService:
         await self.api_keys_service.create_api_key(api_key=api_keys_obj)
 
         # # Initialize user docs (optional)
-        # user_docs = UserDocs(user_id=created_user_id)
-        # await self.docs_service.create_doc(user_docs)
+        user_docs = UserDocs(user_id=str(created_user_id))
+        await self.docs_service.create_userdoc(user_docs)

@@ -15,11 +15,9 @@ class DocsService:
     def __init__(self, repo: DocsRepo):
         self.repo = repo
 
-    async def create_doc(self, doc: UserDocs) -> UserDocs:
+    async def create_userdoc(self, doc: UserDocs) -> UserDocs:
         try:
-            if not doc or not doc.title:
-                raise InvalidDocumentDataError("Document title is required")
-            result = await self.repo.create_doc(doc)
+            result = await self.repo.create_userdoc(doc)
             if isinstance(result, Exception):
                 raise DocumentCreationError(str(result))
             return result
@@ -33,7 +31,13 @@ class DocsService:
             if not doc_id:
                 raise InvalidDocumentDataError("Document ID is required")
             result = await self.repo.get_doc_by_id(doc_id)
-            if isinstance(result, Exception):
+            userdoc = UserDocs(**result)
+            doc_found = False 
+            for doc in userdoc.docs:
+                if doc.doc_id == doc_id:
+                    doc_found = True 
+                    return doc 
+            if not doc_found or isinstance(result, Exception):
                 raise DocumentNotFoundError(f"Document with ID {doc_id} not found")
             return result
         except Exception as e:
@@ -41,9 +45,9 @@ class DocsService:
                 raise e
             raise DocumentNotFoundError(str(e))
     
-    async def get_all_docs(self) -> List[Document]:
+    async def get_all_docs_by_userid(self, user_id : str) -> List[Document]:
         try:
-            result = await self.repo.get_all_docs()
+            result = await self.repo.get_all_docs_by_userid(user_id)
             if isinstance(result, Exception):
                 raise DocumentNotFoundError("Failed to fetch documents")
             return result
@@ -103,4 +107,20 @@ class DocsService:
             if isinstance(e, CustomException):
                 raise e
             raise DocumentNotFoundError(str(e))
+    
+    async def add_document(self, user_id : str, doc : Document):
+        try:
+            if not user_id:
+                raise InvalidDocumentDataError("User ID is required")
+            result = await self.repo.upload_doc(user_id=user_id, doc=doc)
+            if isinstance(result, Exception):
+                raise DocumentNotFoundError(f"Failed to fetch documents for user {user_id}")
+            return result
+        except Exception as e:
+            if isinstance(e, CustomException):
+                raise e
+            raise DocumentNotFoundError(f"Failed to fetch documents for user {user_id}")
+    
+            
+
     
