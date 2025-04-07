@@ -1,7 +1,6 @@
 from src.app.api.v1.users.user_router import UserRouter
 from src.app.core.utils.error_handler import ErrorHandler
 from src.app.schemas.users.emailloginreq import EmailLoginReq
-from src.app.schemas.std_response import StdResponse
 
 
 def include_route(routerobj: UserRouter) -> None:
