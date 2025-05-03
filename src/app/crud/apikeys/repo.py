@@ -9,22 +9,22 @@ class ApiKeysRepo:
 
     async def create_api_key(self, api_key: ApiKeys):
         try:
-            api_key = await self.collection.insert_one(api_key.model_dump()) 
-            return api_key
+            res = await self.collection.insert_one(api_key.model_dump()) 
+            return res
         except Exception as e:
             raise e 
         
     async def get_api_key(self, api_key: ApiKeys):
         try:
-            api_key = await self.collection.find_one({"api_key": api_key.api_key})
-            return api_key
+            res = await self.collection.find_one({"api_key": api_key.api_key})
+            return res
         except Exception as e:
             raise e 
         
     async def get_api_key_by_user_id(self, user_id: str):
         try:
-            api_key = await self.collection.find_one({"user_id": user_id})
-            return api_key
+            res = await self.collection.find_one({"user_id": user_id})
+            return res
         except Exception as e:
             raise e 
         

@@ -60,16 +60,16 @@ class UserService:
                 raise EmailAlreadyExistsError(f"User with email {user.email} already exists")
 
             # Create user
-            created_user = await self.repo.create_user(user)
-            if isinstance(created_user, Exception):
+            created_user_id = await self.repo.create_user(user)
+            if isinstance(created_user_id, Exception):
                 raise EmailAlreadyExistsError()
             
             try:
                 # Initialize user resources
-                await self._initialize_user_resources(created_user_id=created_user)
+                await self._initialize_user_resources(created_user_id=created_user_id)
             except Exception as e:
                 # If resource initialization fails, we should clean up the created user
-                await self.repo.delete_user(created_user)
+                await self.repo.delete_user(str(created_user_id))
                 raise e
 
             
@@ -133,7 +133,7 @@ class UserService:
                 raise e
             raise UserNotFoundError(str(e))
 
-    async def _initialize_user_resources(self, created_user_id: str) -> None:
+    async def _initialize_user_resources(self, created_user_id: str  | None) -> None:
         """
         Initialize resources for a new user.
 

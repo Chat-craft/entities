@@ -12,6 +12,3 @@ class DocsUploadReq(BaseModel):
 
     class Config:
         extra = "forbid"
- 
-
-

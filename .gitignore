@@ -2,7 +2,8 @@
 .env
 
 # Ignore projectenv directory
-.projenv/
+/projenv/
+
 
 # Ignore .venv directory
 .venv/
@@ -20,7 +21,9 @@
 **/__pycache__/
 
 # Ignore *.pem certificates
-.pem
+*.pem
+*.json
+*.toml
 
 # Ignore other common temporary files and directories
 .pyc
@@ -28,3 +31,5 @@
 *.swp
 log/
 tmp/
+~/.pyenv/
+.cfg

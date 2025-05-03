@@ -12,7 +12,7 @@ def include_route(routerobj : DocsRouter) -> None:
                 doc_name=docobj.doc_name,
                 doc_type=docobj.doc_type,
                 doc_url=docobj.doc_url,
-                update_interval=docobj.update_interval
+                update_interval=str(docobj.update_interval)
             )
             _ = await routerobj.docs_service.add_document(user_id=docobj.user_id, doc=doc)
             return ErrorHandler.handle_success(
