@@ -31,13 +31,7 @@ class DocsService:
             if not doc_id:
                 raise InvalidDocumentDataError("Document ID is required")
             result = await self.repo.get_doc_by_id(doc_id)
-            userdoc = UserDocs(**result)
-            doc_found = False 
-            for doc in userdoc.docs:
-                if doc.doc_id == doc_id:
-                    doc_found = True 
-                    return doc 
-            if not doc_found or isinstance(result, Exception):
+            if not result or isinstance(result, Exception):
                 raise DocumentNotFoundError(f"Document with ID {doc_id} not found")
             return result
         except Exception as e:
@@ -63,20 +57,20 @@ class DocsService:
             result = await self.repo.update_doc(doc_id, doc)
             if isinstance(result, Exception):
                 raise DocumentUpdateError(f"Failed to update document with ID {doc_id}")
-            return result
+            return doc
         except Exception as e:
             if isinstance(e, CustomException):
                 raise e
             raise DocumentUpdateError(str(e))
     
-    async def delete_doc(self, doc_id: str) -> Document:
+    async def delete_doc(self, doc_id: str) -> bool:
         try:
             if not doc_id:
                 raise InvalidDocumentDataError("Document ID is required")
             result = await self.repo.delete_doc(doc_id)
             if isinstance(result, Exception):
                 raise DocumentDeletionError(f"Failed to delete document with ID {doc_id}")
-            return result
+            return True 
         except Exception as e:
             if isinstance(e, CustomException):
                 raise e

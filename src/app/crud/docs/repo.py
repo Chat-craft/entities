@@ -12,10 +12,16 @@ class DocsRepo:
 
     async def create_userdoc(self, docs: UserDocs):
         try:
-            docs = await self.collection.insert_one(docs.model_dump())
-            return docs
+            doc_dump = docs.model_dump()
+            result = await self.collection.insert_one(doc_dump)
+            inserted_doc = await self.collection.find_one({"_id": result.inserted_id})
+            if not inserted_doc or not isinstance(inserted_doc, dict):
+                raise ValueError("Inserted document not found or not a valid dict")
+            inserted_doc.pop('_id', None)
+            return UserDocs(**inserted_doc)
         except Exception as e:
-            raise e 
+            # Handle exceptions as needed
+            raise e
         
     async def get_doc_by_id(self, doc_id: str) :
         try:
@@ -24,25 +30,34 @@ class DocsRepo:
         except Exception as e:
             raise e 
 
-    async def get_all_docs_by_userid(self, user_id : str):
+    async def get_all_docs_by_userid(self, user_id : str) -> List[Document]:
         try:
             filter = {"user_id" : user_id}
-            docs = await self.collection.find(filter)['docs'].to_list(length=100)
-            return docs 
+            projections = {
+                "user_id" : 0,
+                "docs" : 1,
+                "update_time" : 0
+            }
+            docs = await self.collection.find_one(filter, projections)
+            if not docs :
+                raise FileNotFoundError("Document not found")
+            return list(Document(**doc) for doc in docs) 
         except Exception as e:
             raise e 
         
     async def update_doc(self, doc_id: str, doc: Document):
         try:
-            doc = await self.collection.update_one({"doc_id": doc_id}, {"$set": doc.model_dump()})
-            return doc
+            res = await self.collection.update_one({"doc_id": doc_id}, {"$set": doc.model_dump()})
+            return 
         except Exception as e:
             raise e 
         
-    async def delete_doc(self, doc_id: str) -> Document | Exception :
+    async def delete_doc(self, doc_id: str) -> bool | Exception :
         try:
             doc = await self.collection.delete_one({"doc_id": doc_id})
-            return doc 
+            if not doc :
+                raise FileNotFoundError("Document not found")
+            return True 
         except Exception as e:
             raise e 
         

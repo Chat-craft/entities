@@ -1,5 +1,5 @@
 from src.app.models.apikeys import ApiKeys
-from app.crud.apikeys.repo import ApiKeysRepo
+from src.app.crud.apikeys.repo import ApiKeysRepo
 
 
 class ApiKeysService:
@@ -7,14 +7,19 @@ class ApiKeysService:
         self.repo = repo
 
     async def create_api_key(self, api_key: ApiKeys) -> ApiKeys | Exception :
-        return await self.repo.create_api_key(api_key)
+        res = await self.repo.create_api_key(api_key)
+        return ApiKeys.model_validate(res)
     
     async def get_api_key(self, api_key: ApiKeys) -> ApiKeys | Exception :
-        return await self.repo.get_api_key(api_key)
+        res = await self.repo.get_api_key(api_key)
+        return ApiKeys.model_validate(res)
+
     
     async def get_api_key_by_user_id(self, user_id: str) -> ApiKeys | Exception :
-        return await self.repo.get_api_key_by_user_id(user_id)
+        res = await self.repo.get_api_key_by_user_id(user_id)
+        return ApiKeys.model_validate(res)
     
     async def create_api_key_for_user(self, user_id: str) -> ApiKeys | Exception :
-        return await self.repo.create_api_key(ApiKeys(user_id=user_id))
+        res = await self.repo.create_api_key(ApiKeys(user_id=user_id))
+        return ApiKeys.model_validate(res)
     
