@@ -11,6 +11,7 @@ from src.app.crud.apikeys.repo import ApiKeysRepo
 from src.app.api.v1.users.user_router import UserRouter
 from src.app.api.v1.docs.docs_router import DocsRouter
 from src.app.api.v1.file_upload.upload_router import UploadRouter
+from src.app.api.v1.query_prompt.query_router import QueryRouter
 from httpx import AsyncClient 
 from os import environ
 from dotenv import load_dotenv
@@ -70,10 +71,12 @@ async def lifespan(app: FastAPI):
     user_router = UserRouter(user_service=user_service)
     docs_router = DocsRouter(docs_service=docs_service)
     upload_router = UploadRouter(service=file_upload_service)
+    query_router = QueryRouter(service=file_upload_service)
    
     app.include_router(user_router.include_user_routes())
     app.include_router(docs_router.include_docs_routes())
-    app.include_router(upload_router.include_docs_routes())
+    app.include_router(upload_router.include_upload_routes())
+    app.include_router(query_router.include_query_routes())
 
     yield
 

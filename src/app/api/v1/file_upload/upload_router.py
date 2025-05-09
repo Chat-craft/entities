@@ -12,7 +12,7 @@ class UploadRouter(BaseRouter, metaclass = Singleton):
         )
         self.service = service
 
-    def include_docs_routes(self) -> APIRouter:
+    def include_upload_routes(self) -> APIRouter:
         from src.app.api.v1.file_upload import upload_endpoint
 
         upload_endpoint.include_route(self)
