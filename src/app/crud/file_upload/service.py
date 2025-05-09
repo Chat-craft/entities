@@ -40,6 +40,22 @@ class FileUploadService:
         )
         await self.docs_serive.add_document(user_id=user_id, doc=doc)
         return response.json()
+    
+    async def query_prompt(self, user_id: str, query: str) -> dict:
+        """
+        Calls the /query/prompt endpoint with the given user_id and query.
+        """
+        url = f"{self.base_url}/query/prompt"
+        headers = {
+            "accept": "application/json",
+            "user-id": user_id,
+            "x-api-key": self.api_key,
+            "Content-Type": "application/json"
+        }
+        json_body = {"query": query}
+        response = await self.client.post(url, headers=headers, json=json_body)
+        response.raise_for_status()
+        return response.json()
 
 
 
