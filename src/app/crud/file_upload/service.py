@@ -22,9 +22,7 @@ class FileUploadService:
         ):
         file_bytes = await file.read()
         files = {'file': (file.filename, file_bytes, file.content_type)}
-        headers = {'x-api-key' : self.api_key}
-        print("base url", self.base_url)
-        print("my url",  f"{self.base_url}/upload/")
+        headers = {'x-api-key' : self.api_key, "user-id" : user_id}
         response = await self.client.post(
             f"{self.base_url}/upload/",
             files=files,
