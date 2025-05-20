@@ -69,11 +69,8 @@ python -m pytest
 python -m pytest tests/unit_tests.py -v
 ```
 
-4. Run tests with coverage report:
-```bash
-# From the project root directory
-python -m pytest --cov=src tests/
-```
+### Test Run Screenshot 
+<img src = "https://github.com/Chat-craft/.github/blob/main/entities-tests.png" />
 
 ### Troubleshooting Test Issues
 
