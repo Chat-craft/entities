@@ -52,20 +52,69 @@ FILE_SVC_APIKEY="your_file_service_api_key"
 
 Before running the service, it's recommended to run the test suite to ensure everything is working correctly:
 
-1. Run all tests:
+1. Install test dependencies:
 ```bash
-pytest
+pip install -r requirements.txt
 ```
 
-2. Run specific unit tests:
+2. Run all tests:
 ```bash
-pytest tests/unit_tests.py -v
+# From the project root directory
+python -m pytest
 ```
 
-3. Run tests with coverage report:
+3. Run specific unit tests:
 ```bash
-pytest --cov=src tests/
+# From the project root directory
+python -m pytest tests/unit_tests.py -v
 ```
+
+4. Run tests with coverage report:
+```bash
+# From the project root directory
+python -m pytest --cov=src tests/
+```
+
+### Troubleshooting Test Issues
+
+If you encounter errors while running tests:
+
+1. Ensure all dependencies are installed:
+```bash
+pip install -r requirements.txt
+```
+
+2. Check if the virtual environment is activated:
+```bash
+# On Unix/macOS
+source projenv/bin/activate
+# On Windows
+.\projenv\Scripts\activate
+```
+
+3. Verify the project structure:
+```
+entities/
+├── src/
+│   └── app/
+│       ├── core/
+│       ├── models/
+│       ├── schemas/
+│       └── __init__.py
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── unit_tests.py
+├── pyproject.toml
+└── requirements.txt
+```
+
+4. If you get import errors:
+   - Make sure you're running the tests from the project root directory
+   - Use `python -m pytest` instead of just `pytest`
+   - Check that all `__init__.py` files are present in the necessary directories
+
+5. For MongoDB-related test failures, ensure your MongoDB instance is running and the connection string in `.env` is correct.
 
 ## Running the Service
 

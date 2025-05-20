@@ -1,16 +1,11 @@
 # python -m pytest tests/unit_tests.py -v
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime
 from src.app.core.utils.errors import (
     CustomException,
     UserNotFoundError,
     InvalidCredentialsError,
     EmailAlreadyExistsError,
-    InvalidEmailError,
-    InvalidApiKeyError,
-    DocumentNotFoundError,
-    DocumentCreationError,
-    InvalidDocumentDataError
 )
 from src.app.core.utils.status_codes import StatusCodes
 from src.app.core.utils.error_handler import ErrorHandler
