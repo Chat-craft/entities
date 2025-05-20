@@ -1,4 +1,5 @@
 from fastapi import FastAPI 
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from src.app.core.db.connect import ping_server
 from src.app.crud.user.service import UserService
@@ -37,7 +38,7 @@ async def lifespan(app: FastAPI):
         return 
 
     # httpx client 
-    httpx_client = AsyncClient()
+    httpx_client = AsyncClient(timeout=60)
 
 
     # Initialize repositories
@@ -85,3 +86,13 @@ async def lifespan(app: FastAPI):
     client.close()
 
 app = FastAPI(lifespan=lifespan)
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+

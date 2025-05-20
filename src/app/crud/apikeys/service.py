@@ -8,7 +8,8 @@ class ApiKeysService:
 
     async def create_api_key(self, api_key: ApiKeys) -> ApiKeys | Exception :
         res = await self.repo.create_api_key(api_key)
-        return ApiKeys.model_validate(res)
+        inserted_doc = await self.repo.fetch_doc_by_id(res.inserted_id)
+        return api_key
     
     async def get_api_key(self, api_key: ApiKeys) -> ApiKeys | Exception :
         res = await self.repo.get_api_key(api_key)
